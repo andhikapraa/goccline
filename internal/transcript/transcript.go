@@ -8,11 +8,13 @@ import (
 	"encoding/json"
 	"os"
 	"regexp"
+	"time"
 )
 
 type entry struct {
-	Type    string `json:"type"`
-	Message struct {
+	Type      string `json:"type"`
+	Timestamp string `json:"timestamp"`
+	Message   struct {
 		Content json.RawMessage `json:"content"`
 	} `json:"message"`
 }
@@ -58,6 +60,42 @@ func FirstUserMessage(path string) string {
 		return commandTagRE.ReplaceAllString(text, "")
 	}
 	return ""
+}
+
+// LastUserMessageTime returns the timestamp of the most recent user message
+// in the transcript, or zero if unavailable. Used by wellness to know when
+// the current coding burst started.
+func LastUserMessageTime(path string) time.Time {
+	if path == "" {
+		return time.Time{}
+	}
+	f, err := os.Open(path)
+	if err != nil {
+		return time.Time{}
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	buf := make([]byte, 0, 64*1024)
+	scanner.Buffer(buf, 4*1024*1024)
+
+	var last time.Time
+	for scanner.Scan() {
+		line := scanner.Bytes()
+		var e entry
+		if err := json.Unmarshal(line, &e); err != nil {
+			continue
+		}
+		if e.Type != "user" || e.Timestamp == "" {
+			continue
+		}
+		t, err := time.Parse(time.RFC3339, e.Timestamp)
+		if err != nil {
+			continue
+		}
+		last = t
+	}
+	return last
 }
 
 // extractText handles both string and array forms of message.content.

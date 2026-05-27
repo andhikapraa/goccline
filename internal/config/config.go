@@ -50,11 +50,25 @@ type SessionInfo struct {
 	TitleLength int `toml:"title_length"`
 }
 
+// Prayer configures Islamic prayer time fetching and display.
+type Prayer struct {
+	Latitude  float64 `toml:"latitude"`
+	Longitude float64 `toml:"longitude"`
+	// Method is the AlAdhan calculation method (2 = Islamic Society of
+	// North America). See https://aladhan.com/calculation-methods.
+	Method int `toml:"method"`
+	// School: 1 = Hanafi (later Asr), 0 = Shafi/Maliki/Hanbali.
+	School int `toml:"school"`
+	// LocationLabel is displayed when present (e.g. "Jakarta, ID").
+	LocationLabel string `toml:"location_label"`
+}
+
 type Config struct {
 	Display     Display     `toml:"display"`
 	Theme       Theme       `toml:"theme"`
 	Features    Features    `toml:"features"`
 	SessionInfo SessionInfo `toml:"session_info"`
+	Prayer      Prayer      `toml:"prayer"`
 }
 
 // DefaultPath returns the user's preferred config location.
@@ -149,7 +163,30 @@ func Load(path string) (*Config, error) {
 		assignInt(s, "title_length", &cfg.SessionInfo.TitleLength)
 	}
 
+	if p, ok := raw["prayer"].(map[string]any); ok {
+		assignFloat(p, "latitude", &cfg.Prayer.Latitude)
+		assignFloat(p, "longitude", &cfg.Prayer.Longitude)
+		assignInt(p, "method", &cfg.Prayer.Method)
+		assignInt(p, "school", &cfg.Prayer.School)
+		assignString(p, "location_label", &cfg.Prayer.LocationLabel)
+	}
+
 	return cfg, nil
+}
+
+func assignFloat(m map[string]any, key string, dest *float64) {
+	switch v := m[key].(type) {
+	case float64:
+		*dest = v
+	case int64:
+		*dest = float64(v)
+	}
+}
+
+func assignString(m map[string]any, key string, dest *string) {
+	if v, ok := m[key].(string); ok {
+		*dest = v
+	}
 }
 
 func assignInt(m map[string]any, key string, dest *int) {
