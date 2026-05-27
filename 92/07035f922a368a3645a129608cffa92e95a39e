@@ -1,0 +1,25 @@
+internal/transcript/transcript.go
+  s_ea26885bbef96b::t_bfb2568848c907 1-83
+internal/components/session_info.go
+  s_ea26885bbef96b::t_e11f07e1e71d84 3-13,18-20,26-59,61
+internal/git/git.go
+  s_ea26885bbef96b::t_4bdd8095eaa8bc 70-78
+internal/components/repo_info.go
+  s_ea26885bbef96b::t_cffe9168c5f59e 16-17,29,32,34-39,42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9207035f922a368a3645a129608cffa92e95a39e",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
