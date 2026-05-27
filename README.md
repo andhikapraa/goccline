@@ -1,5 +1,13 @@
 <div align="center">
 
+```
+       __                  _ _
+  ___ / _|___ __ ___ _ __ | (_)_ _   ___
+ / _ \ |_/ _ \| '_/ _| | '_|| | | ' \ / -_)
+ \___/__\___/|_| \__|_|_|  |_|_|_||_|\___|
+                       ·  🕌  ·
+```
+
 # goccline
 
 **The Claude Code statusline that thinks about your salat.**
@@ -13,6 +21,8 @@ renders in ~400 ms.
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
+
+![goccline running in Claude Code](docs/screenshot.png)
 
 ```
 ~/Development/goccline (main) ✅ │ 🔗 a35a0566
