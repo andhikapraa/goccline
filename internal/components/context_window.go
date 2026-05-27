@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/andhikapraa/goccline/internal/theme"
 	"github.com/andhikapraa/goccline/internal/transcript"
 )
 
@@ -25,25 +26,39 @@ func contextLimit(ctx *Context) int {
 	return 200_000
 }
 
-// renderContextWindow shows "🧠 45% (90K/200K)". The percentage colors
-// shift toward warning/critical as the window fills up.
+// renderContextWindow shows "🧠 45% (90K/200K)". Prefers the native
+// context_window block from Claude Code's JSON when present; falls back
+// to parsing the transcript for older Claude Code versions.
 func renderContextWindow(ctx *Context) string {
+	t := ctx.Theme
+
+	if cw := ctx.Input.ContextWindow; cw.ContextWindowSize > 0 {
+		pct := cw.UsedPercentage
+		used := cw.TotalInputTokens + cw.TotalOutputTokens
+		return fmt.Sprintf("🧠 %s%d%% (%s/%s)%s",
+			ctxColor(pct, t), pct, humanK(used), humanK(cw.ContextWindowSize), t.Reset)
+	}
+
 	used := transcript.Context(ctx.Input.TranscriptPath)
 	if used == 0 {
 		return ""
 	}
 	limit := contextLimit(ctx)
 	pct := used * 100 / limit
-	t := ctx.Theme
-	color := t.WellnessOk
+	return fmt.Sprintf("🧠 %s%d%% (%s/%s)%s",
+		ctxColor(pct, t), pct, humanK(used), humanK(limit), t.Reset)
+}
+
+// ctxColor picks a green/yellow/red color for the % filled.
+func ctxColor(pct int, t theme.Theme) string {
 	switch {
 	case pct >= 90:
-		color = t.WellnessNudge
+		return t.WellnessNudge
 	case pct >= 75:
-		color = t.Time
+		return t.Time
+	default:
+		return t.WellnessOk
 	}
-	return fmt.Sprintf("🧠 %s%d%% (%s/%s)%s",
-		color, pct, humanK(used), humanK(limit), t.Reset)
 }
 
 // renderContextAlert shows "⚠️ >LIMIT" in red if the context window is

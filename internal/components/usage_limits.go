@@ -14,8 +14,9 @@ func init() {
 	Register("reset_timer", renderResetTimer)
 }
 
-// renderUsageLimits prints "⏱ Limit: 5h:22% • 7d:54%" using the rate_limits
-// block Claude Code v2.1.80+ ships in the statusLine JSON.
+// renderUsageLimits prints "⏱ Used 5h:22% • 7d:54%" using the rate_limits
+// block Claude Code v2.1.80+ ships in the statusLine JSON. Percentages are
+// USED (not remaining) — the rest is your headroom.
 func renderUsageLimits(ctx *Context) string {
 	rl := ctx.Input.RateLimits
 	five := rl.FiveHour.UsedPercentage
@@ -33,7 +34,7 @@ func renderUsageLimits(ctx *Context) string {
 	if len(parts) == 0 {
 		return ""
 	}
-	return "⏱ Limit: " + strings.Join(parts, " • ")
+	return "⏱ Used " + strings.Join(parts, " • ")
 }
 
 // renderResetTimer prints "⏱ 5h:2h5m • 7d:Sun 8AM" — the time-to-next-reset
@@ -41,16 +42,36 @@ func renderUsageLimits(ctx *Context) string {
 func renderResetTimer(ctx *Context) string {
 	rl := ctx.Input.RateLimits
 	parts := []string{}
-	if d := timeUntil(fmt.Sprint(rl.FiveHour.ResetsAt)); d != "" {
+	if d := timeUntilAny(rl.FiveHour.ResetsAt); d != "" {
 		parts = append(parts, "5h:"+d)
 	}
-	if d := timeUntil(fmt.Sprint(rl.SevenDay.ResetsAt)); d != "" {
+	if d := timeUntilAny(rl.SevenDay.ResetsAt); d != "" {
 		parts = append(parts, "7d:"+d)
 	}
 	if len(parts) == 0 {
 		return ""
 	}
 	return "⏱ " + ctx.Theme.Dim + strings.Join(parts, " • ") + ctx.Theme.Reset
+}
+
+// timeUntilAny coerces the JSON value into a time and returns the formatted
+// remaining duration. Handles three shapes Claude Code has emitted across
+// versions: float64 (e.g. 1.78e9 — current v2.1.80+), int64, and ISO string.
+func timeUntilAny(raw any) string {
+	switch v := raw.(type) {
+	case nil:
+		return ""
+	case float64:
+		return timeUntil(strconv.FormatInt(int64(v), 10))
+	case int64:
+		return timeUntil(strconv.FormatInt(v, 10))
+	case int:
+		return timeUntil(strconv.Itoa(v))
+	case string:
+		return timeUntil(v)
+	default:
+		return timeUntil(fmt.Sprint(v))
+	}
 }
 
 // timeUntil parses an ISO 8601 timestamp or Unix epoch seconds and returns

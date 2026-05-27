@@ -10,15 +10,26 @@ import (
 // Payload mirrors the JSON Claude Code sends. Fields are best-effort;
 // missing pieces are tolerated.
 type Payload struct {
-	SessionID      string      `json:"session_id"`
-	TranscriptPath string      `json:"transcript_path"`
-	CWD            string      `json:"cwd"`
-	Model          Model       `json:"model"`
-	Workspace      Workspace   `json:"workspace"`
-	Cost           Cost        `json:"cost"`
-	Version        string      `json:"version"`
-	OutputStyle    Style       `json:"output_style"`
-	RateLimits     RateLimits  `json:"rate_limits"`
+	SessionID      string        `json:"session_id"`
+	TranscriptPath string        `json:"transcript_path"`
+	CWD            string        `json:"cwd"`
+	Model          Model         `json:"model"`
+	Workspace      Workspace     `json:"workspace"`
+	Cost           Cost          `json:"cost"`
+	Version        string        `json:"version"`
+	OutputStyle    Style         `json:"output_style"`
+	RateLimits     RateLimits    `json:"rate_limits"`
+	ContextWindow  ContextWindow `json:"context_window"`
+}
+
+// ContextWindow is Claude Code v2.1.80+ shipping context usage directly,
+// saving us from parsing the transcript.
+type ContextWindow struct {
+	TotalInputTokens  int  `json:"total_input_tokens"`
+	TotalOutputTokens int  `json:"total_output_tokens"`
+	ContextWindowSize int  `json:"context_window_size"`
+	UsedPercentage    int  `json:"used_percentage"`
+	RemainingPercent  int  `json:"remaining_percentage"`
 }
 
 // RateLimits is Claude Code v2.1.80+ surfaces the same data the OAuth
