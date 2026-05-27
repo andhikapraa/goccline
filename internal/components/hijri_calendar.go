@@ -5,7 +5,25 @@ import (
 	"time"
 
 	"github.com/andhikapraa/goccline/internal/hijri"
+	"github.com/andhikapraa/goccline/internal/location"
 )
+
+// resolveLocationLabel picks a display label for the user's location.
+// Priority: explicit Config.toml location_label > reverse-geocoded GPS label.
+// Returns "" if neither source yields anything usable.
+func resolveLocationLabel(ctx *Context) string {
+	if lbl := ctx.Config.Prayer.LocationLabel; lbl != "" {
+		return lbl
+	}
+	if ctx.Config.Prayer.LocationMode != "gps" {
+		return ""
+	}
+	c, err := location.FromGPS()
+	if err != nil {
+		return ""
+	}
+	return location.Label(c)
+}
 
 func init() {
 	Register("hijri_calendar", renderHijriCalendar)
@@ -25,7 +43,7 @@ func renderHijriCalendar(ctx *Context) string {
 		t.HijriMoon + hijri.MoonPhase(d.Day) + t.Reset,
 		time.Now().Format("Jan 2 2006"),
 	}
-	if label := ctx.Config.Prayer.LocationLabel; label != "" {
+	if label := resolveLocationLabel(ctx); label != "" {
 		parts = append(parts, t.Location+"📍 "+label+t.Reset)
 	}
 	return strings.Join(parts, " │ ")
@@ -34,7 +52,7 @@ func renderHijriCalendar(ctx *Context) string {
 // renderLocationDisplay prints just the user's location label (if set).
 // Useful when you want location on a different line from hijri_calendar.
 func renderLocationDisplay(ctx *Context) string {
-	label := ctx.Config.Prayer.LocationLabel
+	label := resolveLocationLabel(ctx)
 	if label == "" {
 		return ""
 	}
