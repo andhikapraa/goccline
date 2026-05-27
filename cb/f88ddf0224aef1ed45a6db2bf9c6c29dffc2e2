@@ -1,0 +1,33 @@
+internal/input/input.go
+  s_ea26885bbef96b::t_2815ce254d2c9f 1-61
+internal/components/repo_info.go
+  s_ea26885bbef96b::t_8660dc235bc677 1-27
+go.mod
+  s_ea26885bbef96b::t_233986dde6d60d 3-5
+internal/components/component.go
+  s_ea26885bbef96b::t_73b11095ce5700 1-52
+internal/config/config.go
+  s_ea26885bbef96b::t_84d72b25f2f518 1-139
+main.go
+  s_ea26885bbef96b::t_cb4bb779b97f6f 1-35
+.gitignore
+  s_ea26885bbef96b::t_e5cadfc83ca48d 1-8
+internal/render/render.go
+  s_ea26885bbef96b::t_a4968056bd8b57 1-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "cbf88ddf0224aef1ed45a6db2bf9c6c29dffc2e2",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
