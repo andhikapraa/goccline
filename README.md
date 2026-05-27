@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="docs/brand/logo-256.png" alt="goccline" width="200" />
-
-# goccline
+<img src="docs/brand/logo-wordmark-2x.png" alt="goccline" height="80" />
 
 **The Claude Code statusline that thinks about your salat.**
 
