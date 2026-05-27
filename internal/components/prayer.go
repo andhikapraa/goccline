@@ -5,8 +5,24 @@ import (
 	"strings"
 	"time"
 
+	"github.com/andhikapraa/goccline/internal/config"
+	"github.com/andhikapraa/goccline/internal/location"
 	"github.com/andhikapraa/goccline/internal/prayer"
 )
+
+// resolveCoords picks coordinates from config.location_mode:
+//   - "gps": ask CoreLocationCLI, fall back to configured lat/lon on failure.
+//   - "manual" (or empty): use configured lat/lon.
+//
+// Returns (0, 0) when neither source yields coordinates.
+func resolveCoords(cfg config.Prayer) (float64, float64) {
+	if cfg.LocationMode == "gps" {
+		if c, err := location.FromGPS(); err == nil && c.Latitude != 0 {
+			return c.Latitude, c.Longitude
+		}
+	}
+	return cfg.Latitude, cfg.Longitude
+}
 
 func init() {
 	Register("prayer_icon", renderPrayerIcon)
@@ -32,15 +48,15 @@ func renderPrayerTimesOnly(ctx *Context) string {
 
 func renderPrayerInternal(ctx *Context, includeIcon bool) string {
 	cfg := ctx.Config.Prayer
-	if cfg.Latitude == 0 && cfg.Longitude == 0 {
-		// No location configured → silently skip rather than confusing display.
+	lat, lon := resolveCoords(cfg)
+	if lat == 0 && lon == 0 {
 		return ""
 	}
 	method := cfg.Method
 	if method == 0 {
 		method = 2 // ISNA default
 	}
-	t, err := prayer.Fetch(cfg.Latitude, cfg.Longitude, method, cfg.School)
+	t, err := prayer.Fetch(lat, lon, method, cfg.School)
 	if err != nil {
 		return ""
 	}

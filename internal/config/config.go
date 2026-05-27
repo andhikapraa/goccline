@@ -52,8 +52,12 @@ type SessionInfo struct {
 
 // Prayer configures Islamic prayer time fetching and display.
 type Prayer struct {
-	Latitude  float64 `toml:"latitude"`
-	Longitude float64 `toml:"longitude"`
+	// LocationMode controls coordinate source. "gps" calls
+	// CoreLocationCLI (macOS only) and caches for 1h. "manual" (or empty)
+	// uses the lat/lon below.
+	LocationMode string  `toml:"location_mode"`
+	Latitude     float64 `toml:"latitude"`
+	Longitude    float64 `toml:"longitude"`
 	// Method is the AlAdhan calculation method (2 = Islamic Society of
 	// North America). See https://aladhan.com/calculation-methods.
 	Method int `toml:"method"`
@@ -164,6 +168,7 @@ func Load(path string) (*Config, error) {
 	}
 
 	if p, ok := raw["prayer"].(map[string]any); ok {
+		assignString(p, "location_mode", &cfg.Prayer.LocationMode)
 		assignFloat(p, "latitude", &cfg.Prayer.Latitude)
 		assignFloat(p, "longitude", &cfg.Prayer.Longitude)
 		assignInt(p, "method", &cfg.Prayer.Method)
