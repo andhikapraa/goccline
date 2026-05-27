@@ -1,0 +1,24 @@
+internal/components/session_info.go
+  s_ea26885bbef96b::t_9378c56375bcbf 18-21,27-29,31-32,36-51,53
+internal/config/config.go
+  s_ea26885bbef96b::t_d300c9240d6430 42-52,54-57
+  s_ea26885bbef96b::t_2b1ff42afff733 144-151,155-158
+Config.example.toml
+  s_ea26885bbef96b::t_9739435e172770 15-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "35cb65a1e7cc533f25ff898725b284d98d6f83b8",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
