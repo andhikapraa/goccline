@@ -16,7 +16,91 @@ type entry struct {
 	Timestamp string `json:"timestamp"`
 	Message   struct {
 		Content json.RawMessage `json:"content"`
+		Usage   Usage           `json:"usage"`
 	} `json:"message"`
+}
+
+// Usage mirrors message.usage from a Claude Code assistant entry.
+type Usage struct {
+	InputTokens              int `json:"input_tokens"`
+	OutputTokens             int `json:"output_tokens"`
+	CacheReadInputTokens     int `json:"cache_read_input_tokens"`
+	CacheCreationInputTokens int `json:"cache_creation_input_tokens"`
+}
+
+// Context returns the current context window fill (input + cache_read +
+// cache_creation tokens) from the most recent assistant message. Returns
+// zero if the transcript has no usage data.
+func Context(path string) int {
+	u, ok := lastUsage(path)
+	if !ok {
+		return 0
+	}
+	return u.InputTokens + u.CacheReadInputTokens + u.CacheCreationInputTokens
+}
+
+// LastUsage returns the most recent assistant message's usage data.
+func LastUsage(path string) (Usage, bool) {
+	return lastUsage(path)
+}
+
+// TotalTokens returns the cumulative (sum across all assistant messages)
+// input and output token counts for the transcript.
+func TotalTokens(path string) (input, output int) {
+	if path == "" {
+		return 0, 0
+	}
+	f, err := os.Open(path)
+	if err != nil {
+		return 0, 0
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	scanner.Buffer(make([]byte, 0, 64*1024), 16*1024*1024)
+	for scanner.Scan() {
+		var e entry
+		if err := json.Unmarshal(scanner.Bytes(), &e); err != nil {
+			continue
+		}
+		if e.Type != "assistant" {
+			continue
+		}
+		input += e.Message.Usage.InputTokens
+		output += e.Message.Usage.OutputTokens
+	}
+	return input, output
+}
+
+func lastUsage(path string) (Usage, bool) {
+	if path == "" {
+		return Usage{}, false
+	}
+	f, err := os.Open(path)
+	if err != nil {
+		return Usage{}, false
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	scanner.Buffer(make([]byte, 0, 64*1024), 16*1024*1024)
+	var last Usage
+	found := false
+	for scanner.Scan() {
+		var e entry
+		if err := json.Unmarshal(scanner.Bytes(), &e); err != nil {
+			continue
+		}
+		if e.Type != "assistant" {
+			continue
+		}
+		if e.Message.Usage.InputTokens == 0 &&
+			e.Message.Usage.CacheReadInputTokens == 0 &&
+			e.Message.Usage.CacheCreationInputTokens == 0 {
+			continue
+		}
+		last = e.Message.Usage
+		found = true
+	}
+	return last, found
 }
 
 type contentBlock struct {

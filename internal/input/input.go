@@ -10,14 +10,30 @@ import (
 // Payload mirrors the JSON Claude Code sends. Fields are best-effort;
 // missing pieces are tolerated.
 type Payload struct {
-	SessionID      string    `json:"session_id"`
-	TranscriptPath string    `json:"transcript_path"`
-	CWD            string    `json:"cwd"`
-	Model          Model     `json:"model"`
-	Workspace      Workspace `json:"workspace"`
-	Cost           Cost      `json:"cost"`
-	Version        string    `json:"version"`
-	OutputStyle    Style     `json:"output_style"`
+	SessionID      string      `json:"session_id"`
+	TranscriptPath string      `json:"transcript_path"`
+	CWD            string      `json:"cwd"`
+	Model          Model       `json:"model"`
+	Workspace      Workspace   `json:"workspace"`
+	Cost           Cost        `json:"cost"`
+	Version        string      `json:"version"`
+	OutputStyle    Style       `json:"output_style"`
+	RateLimits     RateLimits  `json:"rate_limits"`
+}
+
+// RateLimits is Claude Code v2.1.80+ surfaces the same data the OAuth
+// usage API returns, so we don't need to call Anthropic ourselves.
+type RateLimits struct {
+	FiveHour RateWindow `json:"five_hour"`
+	SevenDay RateWindow `json:"seven_day"`
+}
+
+type RateWindow struct {
+	UsedPercentage float64 `json:"used_percentage"`
+	// ResetsAt may be an ISO 8601 string or a Unix epoch number — Claude
+	// Code v2.1.80+ switched to epoch. Store as any and let the consumer
+	// stringify.
+	ResetsAt any `json:"resets_at"`
 }
 
 type Model struct {
