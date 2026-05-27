@@ -1,0 +1,21 @@
+README.md
+  s_ea26885bbef96b::t_42e0466a7ddae7 1-131
+LICENSE
+  s_ea26885bbef96b::t_b6b0e3c0195402 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "46c7cb7260b7308558293f89f3eddec6f8f2a861",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
