@@ -15,31 +15,42 @@ func init() {
 	Register("session_info", renderSessionInfo)
 }
 
-// renderSessionInfo emits "🔗 abc12345 first user message..." — the short
-// session ID followed by the first user prompt read from the transcript,
-// truncated to defaultTitleLength chars.
+// renderSessionInfo emits "🔗 abc12345" by default. When
+// config.session_info.show_first_message is true, also appends the first
+// user prompt read from the transcript file — opt-in because transcript I/O
+// can add ~130ms per render on large transcripts.
 func renderSessionInfo(ctx *Context) string {
 	id := ctx.Input.SessionID
 	if id == "" {
 		return ""
 	}
-	if len(id) > defaultIDLength {
-		id = id[:defaultIDLength]
+	idLen := ctx.Config.SessionInfo.IDLength
+	if idLen <= 0 {
+		idLen = defaultIDLength
 	}
-
-	title := strings.TrimSpace(transcript.FirstUserMessage(ctx.Input.TranscriptPath))
-	if title != "" {
-		title = collapseWhitespace(title)
-		if len(title) > defaultTitleLength {
-			title = title[:defaultTitleLength-3] + "..."
-		}
+	if len(id) > idLen {
+		id = id[:idLen]
 	}
 
 	out := "🔗 " + id
-	if title != "" {
-		out += " " + title
+
+	if !ctx.Config.SessionInfo.ShowFirstMessage {
+		return out
 	}
-	return out
+
+	title := strings.TrimSpace(transcript.FirstUserMessage(ctx.Input.TranscriptPath))
+	if title == "" {
+		return out
+	}
+	title = collapseWhitespace(title)
+	maxLen := ctx.Config.SessionInfo.TitleLength
+	if maxLen <= 0 {
+		maxLen = defaultTitleLength
+	}
+	if len(title) > maxLen {
+		title = title[:maxLen-3] + "..."
+	}
+	return out + " " + title
 }
 
 // collapseWhitespace flattens any run of whitespace (including newlines) to

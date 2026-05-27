@@ -39,10 +39,22 @@ type Features struct {
 	ShowUsageLimits bool `toml:"show_usage_limits"`
 }
 
+type SessionInfo struct {
+	// ShowFirstMessage reads the transcript file to show the first user
+	// prompt next to the session ID. Off by default — transcript I/O can
+	// add ~130ms per render on large files.
+	ShowFirstMessage bool `toml:"show_first_message"`
+	// IDLength controls how many characters of the session UUID to show.
+	IDLength int `toml:"id_length"`
+	// TitleLength bounds the first-message preview when enabled.
+	TitleLength int `toml:"title_length"`
+}
+
 type Config struct {
-	Display  Display  `toml:"display"`
-	Theme    Theme    `toml:"theme"`
-	Features Features `toml:"features"`
+	Display     Display     `toml:"display"`
+	Theme       Theme       `toml:"theme"`
+	Features    Features    `toml:"features"`
+	SessionInfo SessionInfo `toml:"session_info"`
 }
 
 // DefaultPath returns the user's preferred config location.
@@ -129,7 +141,21 @@ func Load(path string) (*Config, error) {
 		assignBool(f, "show_usage_limits", &cfg.Features.ShowUsageLimits)
 	}
 
+	if s, ok := raw["session_info"].(map[string]any); ok {
+		assignBool(s, "show_first_message", &cfg.SessionInfo.ShowFirstMessage)
+		// Bash statusline compat alias.
+		assignBool(s, "show_project", &cfg.SessionInfo.ShowFirstMessage)
+		assignInt(s, "id_length", &cfg.SessionInfo.IDLength)
+		assignInt(s, "title_length", &cfg.SessionInfo.TitleLength)
+	}
+
 	return cfg, nil
+}
+
+func assignInt(m map[string]any, key string, dest *int) {
+	if v, ok := m[key].(int64); ok {
+		*dest = int(v)
+	}
 }
 
 func assignBool(m map[string]any, key string, dest *bool) {

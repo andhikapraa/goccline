@@ -12,6 +12,13 @@ show_commits = true
 show_version = true
 show_submodules = true
 
+[session_info]
+# Append the first user message from the transcript to the session ID,
+# truncated. OFF by default — adds ~130ms per render due to transcript I/O.
+# show_first_message = true
+# id_length = 8
+# title_length = 40
+
 [display]
 lines = 2
 
