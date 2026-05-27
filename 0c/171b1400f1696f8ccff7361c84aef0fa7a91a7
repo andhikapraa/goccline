@@ -1,0 +1,23 @@
+internal/location/reverse.go
+  s_ea26885bbef96b::t_f0bfecdeff27f2 1-96
+internal/components/hijri_calendar.go
+  s_ea26885bbef96b::t_a587ce422fd0d6 55
+  s_ea26885bbef96b::t_2c2f1dc5ccfbef 46
+  s_ea26885bbef96b::t_35ed4c31357916 8,11-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0c171b1400f1696f8ccff7361c84aef0fa7a91a7",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
