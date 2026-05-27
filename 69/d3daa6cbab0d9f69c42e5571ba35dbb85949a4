@@ -1,0 +1,25 @@
+internal/components/prayer.go
+  s_ea26885bbef96b::t_d1cfa9b996c3aa 51-52,59
+  s_ea26885bbef96b::t_f5125e4a6dd7b8 8-9,13-25
+internal/config/config.go
+  s_ea26885bbef96b::t_ef2b874505376a 171
+  s_ea26885bbef96b::t_42db007b47f512 55-60
+internal/location/gps.go
+  s_ea26885bbef96b::t_134eefeac0df90 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "69d3daa6cbab0d9f69c42e5571ba35dbb85949a4",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
