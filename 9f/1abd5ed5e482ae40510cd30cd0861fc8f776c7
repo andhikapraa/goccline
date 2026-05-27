@@ -1,0 +1,27 @@
+internal/components/context_window.go
+  s_ea26885bbef96b::t_4aa567bb6c0b55 29-31,33-38,40-41,50-51
+  s_ea26885bbef96b::t_e57657d2647302 53
+  s_ea26885bbef96b::t_fe10eeb8f29721 7
+  s_ea26885bbef96b::t_df4ac9569a792c 39,49,52,56,58-60
+internal/input/input.go
+  s_ea26885bbef96b::t_f2ddded8b938b6 13-32
+internal/components/usage_limits.go
+  s_ea26885bbef96b::t_fade95acd9d4ba 45,48,57-74
+  s_ea26885bbef96b::t_eefb5b07474074 17-19,37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9f1abd5ed5e482ae40510cd30cd0861fc8f776c7",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
