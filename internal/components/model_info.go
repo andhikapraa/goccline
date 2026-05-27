@@ -17,16 +17,21 @@ func renderModelInfo(ctx *Context) string {
 		return ""
 	}
 
+	t := ctx.Theme
 	emoji := "🤖"
+	color := t.Model
 	id := strings.ToLower(ctx.Input.Model.ID)
 	switch {
 	case strings.Contains(id, "opus"):
 		emoji = "🧠"
+		color = t.Opus
 	case strings.Contains(id, "haiku"):
 		emoji = "⚡"
+		color = t.Haiku
 	case strings.Contains(id, "sonnet"):
 		emoji = "🎵"
+		color = t.Sonnet
 	}
 
-	return emoji + " " + name
+	return emoji + " " + color + name + t.Reset
 }

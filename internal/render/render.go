@@ -8,12 +8,18 @@ import (
 	"github.com/andhikapraa/goccline/internal/config"
 	"github.com/andhikapraa/goccline/internal/cost"
 	"github.com/andhikapraa/goccline/internal/input"
+	"github.com/andhikapraa/goccline/internal/theme"
 )
 
 // Render walks display.line1..display.lines, invokes each component, and
 // joins the results. Returns the full multi-line statusline.
 func Render(cfg *config.Config, in input.Payload) string {
-	ctx := &components.Context{Input: in, Config: cfg, CostMemo: cost.NewMemo()}
+	ctx := &components.Context{
+		Input:    in,
+		Config:   cfg,
+		CostMemo: cost.NewMemo(),
+		Theme:    theme.Resolve(cfg.Theme.Name),
+	}
 
 	var b strings.Builder
 	for i, line := range cfg.Display.Line {

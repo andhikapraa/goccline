@@ -19,13 +19,14 @@ func renderHijriCalendar(ctx *Context) string {
 	if err != nil || d.MonthName == "" {
 		return ""
 	}
+	t := ctx.Theme
 	parts := []string{
-		"🕌 " + d.Format(),
-		hijri.MoonPhase(d.Day),
+		"🕌 " + t.Hijri + d.Format() + t.Reset,
+		t.HijriMoon + hijri.MoonPhase(d.Day) + t.Reset,
 		time.Now().Format("Jan 2 2006"),
 	}
 	if label := ctx.Config.Prayer.LocationLabel; label != "" {
-		parts = append(parts, "📍 "+label)
+		parts = append(parts, t.Location+"📍 "+label+t.Reset)
 	}
 	return strings.Join(parts, " │ ")
 }
@@ -37,5 +38,6 @@ func renderLocationDisplay(ctx *Context) string {
 	if label == "" {
 		return ""
 	}
-	return "📍 " + label
+	t := ctx.Theme
+	return t.Location + "📍 " + label + t.Reset
 }

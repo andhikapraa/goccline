@@ -26,12 +26,13 @@ func renderRepoInfo(ctx *Context) string {
 	if home, err := os.UserHomeDir(); err == nil && strings.HasPrefix(cwd, home) {
 		cwd = "~" + strings.TrimPrefix(cwd, home)
 	}
-	out := filepath.Clean(cwd)
+	t := ctx.Theme
+	out := t.Path + filepath.Clean(cwd) + t.Reset
 
 	if branch := git.Branch(ctx.Input.CWD); branch != "" {
-		out += " (" + branch + ")"
+		out += " " + t.Branch + "(" + branch + ")" + t.Reset
 		if git.HasWorktree(ctx.Input.CWD) {
-			out += " [WT]"
+			out += " " + t.Dim + "[WT]" + t.Reset
 		}
 		if git.IsDirty(ctx.Input.CWD) {
 			out += " 📁"

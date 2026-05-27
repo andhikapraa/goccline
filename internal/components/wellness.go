@@ -29,9 +29,12 @@ func renderWellness(ctx *Context) string {
 		return ""
 	}
 
+	t := ctx.Theme
 	icon := "☕"
+	color := t.WellnessOk
 	if mins >= 45 {
 		icon = "🚶"
+		color = t.WellnessNudge
 	}
-	return fmt.Sprintf("%s Coding %dm/45m", icon, mins)
+	return fmt.Sprintf("%s %sCoding %dm/45m%s", icon, color, mins, t.Reset)
 }

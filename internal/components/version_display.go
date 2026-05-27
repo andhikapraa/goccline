@@ -10,16 +10,18 @@ func renderVersionDisplay(ctx *Context) string {
 	if ctx.Input.Version == "" {
 		return ""
 	}
-	return "CC:" + ctx.Input.Version
+	t := ctx.Theme
+	return t.Version + "CC:" + ctx.Input.Version + t.Reset
 }
 
 // renderVersionInfo shows both CC version and our goccline version.
 func renderVersionInfo(ctx *Context) string {
-	cc := ""
+	t := ctx.Theme
+	out := ""
 	if ctx.Input.Version != "" {
-		cc = "CC:" + ctx.Input.Version + " │ "
+		out = t.Version + "CC:" + ctx.Input.Version + t.Reset + " │ "
 	}
-	return cc + "GL:" + Version
+	return out + t.Model + "GL:" + Version + t.Reset
 }
 
 // Version is set at build time via -ldflags "-X .../components.Version=vX.Y.Z".

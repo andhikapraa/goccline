@@ -32,7 +32,8 @@ func renderSessionInfo(ctx *Context) string {
 		id = id[:idLen]
 	}
 
-	out := "🔗 " + id
+	t := ctx.Theme
+	out := "🔗 " + t.Session + id + t.Reset
 
 	if !ctx.Config.SessionInfo.ShowFirstMessage {
 		return out
@@ -50,7 +51,7 @@ func renderSessionInfo(ctx *Context) string {
 	if len(title) > maxLen {
 		title = title[:maxLen-3] + "..."
 	}
-	return out + " " + title
+	return out + " " + t.SessionText + title + t.Reset
 }
 
 // collapseWhitespace flattens any run of whitespace (including newlines) to

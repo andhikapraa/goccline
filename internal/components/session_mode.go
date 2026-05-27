@@ -12,7 +12,8 @@ func renderSessionMode(ctx *Context) string {
 	if name == "" {
 		return ""
 	}
-	return "Style: " + name
+	t := ctx.Theme
+	return "Style: " + t.Style + name + t.Reset
 }
 
 // renderAgentDisplay is a placeholder until Claude Code surfaces the agent

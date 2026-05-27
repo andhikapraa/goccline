@@ -63,16 +63,17 @@ func renderPrayerInternal(ctx *Context, includeIcon bool) string {
 		}
 	}
 
+	th := ctx.Theme
 	parts := make([]string, 0, len(slots))
 	for i, s := range slots {
 		switch {
 		case nextIdx == -1 || i < nextIdx:
-			parts = append(parts, fmt.Sprintf("%s %s ✓", s.name, s.value))
+			parts = append(parts, fmt.Sprintf("%s%s %s ✓%s", th.PrayerDone, s.name, s.value, th.Reset))
 		case i == nextIdx:
 			remaining := time.Until(parseClock(s.value, now))
-			parts = append(parts, fmt.Sprintf("%s %s (%s)", s.name, s.value, humanDuration(remaining)))
+			parts = append(parts, fmt.Sprintf("%s%s %s (%s)%s", th.PrayerNext, s.name, s.value, humanDuration(remaining), th.Reset))
 		default:
-			parts = append(parts, fmt.Sprintf("%s %s", s.name, s.value))
+			parts = append(parts, fmt.Sprintf("%s%s %s%s", th.Prayer, s.name, s.value, th.Reset))
 		}
 	}
 

@@ -25,7 +25,8 @@ func renderCostLive(ctx *Context) string {
 	if c <= 0 {
 		return ""
 	}
-	return fmt.Sprintf("💰 $%.2f", c)
+	t := ctx.Theme
+	return fmt.Sprintf("💰 %s$%.2f%s", t.CostLive, c, t.Reset)
 }
 
 // renderCostToday sums spend across all projects from midnight local.
@@ -40,7 +41,8 @@ func renderCostToday(ctx *Context) string {
 	if total == 0 {
 		return ""
 	}
-	return fmt.Sprintf("📅 $%.2f today", total)
+	t := ctx.Theme
+	return fmt.Sprintf("📅 %s$%.2f today%s", t.CostToday, total, t.Reset)
 }
 
 // renderCostWeekly sums spend across the last 7 days.
@@ -55,7 +57,8 @@ func renderCostWeekly(ctx *Context) string {
 	if total == 0 {
 		return ""
 	}
-	return fmt.Sprintf("📊 $%.2f 7d", total)
+	t := ctx.Theme
+	return fmt.Sprintf("📊 %s$%.2f 7d%s", t.CostWeek, total, t.Reset)
 }
 
 // renderCostMonthly sums spend across the last 30 days.
@@ -70,7 +73,8 @@ func renderCostMonthly(ctx *Context) string {
 	if total == 0 {
 		return ""
 	}
-	return fmt.Sprintf("📈 $%.2f 30d", total)
+	t := ctx.Theme
+	return fmt.Sprintf("📈 %s$%.2f 30d%s", t.CostMonth, total, t.Reset)
 }
 
 // renderCostRepo sums all-time spend for the current project's transcript
@@ -92,12 +96,13 @@ func renderCostRepo(ctx *Context) string {
 	if _, err := os.Stat(repoDir); err != nil {
 		return ""
 	}
-	entries := cost.Scan(repoDir, time.Time{})
+	entries := ctx.CostMemo.Scan(repoDir, time.Time{})
 	total := cost.Sum(entries)
 	if total == 0 {
 		return ""
 	}
-	return fmt.Sprintf("📁 $%.2f repo", total)
+	t := ctx.Theme
+	return fmt.Sprintf("📁 %s$%.2f repo%s", t.CostRepo, total, t.Reset)
 }
 
 // projectsRoot returns the Claude Code projects directory.
