@@ -27,13 +27,17 @@ type aladhanResponse struct {
 	} `json:"data"`
 }
 
-// Fetch returns today's prayer times for the given coordinates. The result
-// is cached on disk for 24h so consecutive statusline renders don't hit the
-// network. Method 2 = Islamic Society of North America (sensible default).
-// School 1 = Hanafi (matches the bash statusline's default for Indonesia).
+// Fetch returns today's prayer times for the given coordinates. See FetchOn
+// for the underlying implementation.
 func Fetch(latitude, longitude float64, method, school int) (Times, error) {
-	key := fmt.Sprintf("prayer-%d-%.4f-%.4f-m%d-s%d",
-		time.Now().YearDay(), latitude, longitude, method, school)
+	return FetchOn(time.Now(), latitude, longitude, method, school)
+}
+
+// FetchOn returns prayer times for an arbitrary date. Caches per (date,
+// coords, method, school) for 24h so consecutive renders are free.
+func FetchOn(day time.Time, latitude, longitude float64, method, school int) (Times, error) {
+	key := fmt.Sprintf("prayer-%s-%.4f-%.4f-m%d-s%d",
+		day.Format("2006-01-02"), latitude, longitude, method, school)
 
 	var t Times
 	if cache.Get(key, &t) {
@@ -41,7 +45,7 @@ func Fetch(latitude, longitude float64, method, school int) (Times, error) {
 	}
 
 	url := fmt.Sprintf("https://api.aladhan.com/v1/timings/%s?latitude=%f&longitude=%f&method=%d&school=%d",
-		time.Now().Format("02-01-2006"), latitude, longitude, method, school)
+		day.Format("02-01-2006"), latitude, longitude, method, school)
 	client := http.Client{Timeout: 5 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {

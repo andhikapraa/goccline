@@ -80,7 +80,7 @@ func renderPrayerInternal(ctx *Context, includeIcon bool) string {
 	}
 
 	th := ctx.Theme
-	parts := make([]string, 0, len(slots))
+	parts := make([]string, 0, len(slots)+1)
 	for i, s := range slots {
 		switch {
 		case nextIdx == -1 || i < nextIdx:
@@ -93,6 +93,17 @@ func renderPrayerInternal(ctx *Context, includeIcon bool) string {
 		}
 	}
 
+	// All of today done? Append tomorrow's Fajr as the next prayer.
+	if nextIdx == -1 {
+		tomorrow := now.AddDate(0, 0, 1)
+		if tt, err := prayer.FetchOn(tomorrow, lat, lon, method, cfg.School); err == nil && tt.Fajr != "" {
+			fajrTime := parseClockOn(tt.Fajr, tomorrow)
+			remaining := time.Until(fajrTime)
+			parts = append(parts, fmt.Sprintf("%sFajr %s (%s)%s",
+				th.PrayerNext, tt.Fajr, humanDuration(remaining), th.Reset))
+		}
+	}
+
 	out := strings.Join(parts, " │ ")
 	if includeIcon {
 		out = "🕌 " + out
@@ -102,12 +113,17 @@ func renderPrayerInternal(ctx *Context, includeIcon bool) string {
 
 // parseClock combines a HH:MM string with today's date in the current TZ.
 func parseClock(hhmm string, today time.Time) time.Time {
-	t, err := time.ParseInLocation("15:04", hhmm, today.Location())
+	return parseClockOn(hhmm, today)
+}
+
+// parseClockOn anchors a HH:MM string to the given day's date.
+func parseClockOn(hhmm string, day time.Time) time.Time {
+	t, err := time.ParseInLocation("15:04", hhmm, day.Location())
 	if err != nil {
-		return today
+		return day
 	}
-	return time.Date(today.Year(), today.Month(), today.Day(),
-		t.Hour(), t.Minute(), 0, 0, today.Location())
+	return time.Date(day.Year(), day.Month(), day.Day(),
+		t.Hour(), t.Minute(), 0, 0, day.Location())
 }
 
 func humanDuration(d time.Duration) string {
