@@ -1,0 +1,22 @@
+internal/prayer/prayer.go
+  s_ea26885bbef96b::t_c0a676d369f967 30-31,33-40,48
+internal/components/prayer.go
+  s_ea26885bbef96b::t_cadd2c87405388 83,96-103
+  s_ea26885bbef96b::t_c9ead845ad553c 116-121,123,125-126
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "68a10fa2449666a4ac6b52936177590b51df0d7c",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
