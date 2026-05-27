@@ -67,6 +67,15 @@ func HasWorktree(dir string) bool {
 	return strings.Contains(out, "/worktrees/")
 }
 
+// IsDirty returns true if the working tree has any uncommitted changes.
+func IsDirty(dir string) bool {
+	out, err := run(dir, "status", "--porcelain")
+	if err != nil {
+		return false
+	}
+	return out != ""
+}
+
 // MustInt parses an int or returns 0 (silent).
 func MustInt(s string) int {
 	n, _ := strconv.Atoi(strings.TrimSpace(s))
