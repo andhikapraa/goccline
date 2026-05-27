@@ -6,14 +6,16 @@ import (
 	"sync"
 
 	"github.com/andhikapraa/goccline/internal/config"
+	"github.com/andhikapraa/goccline/internal/cost"
 	"github.com/andhikapraa/goccline/internal/input"
 )
 
 // Context is the per-render state passed to every component. Components
-// MUST NOT mutate it.
+// MUST NOT mutate it directly; use the provided helpers.
 type Context struct {
-	Input  input.Payload
-	Config *config.Config
+	Input    input.Payload
+	Config   *config.Config
+	CostMemo *cost.MemoCache
 }
 
 // RenderFn returns the string this component contributes to the line.
