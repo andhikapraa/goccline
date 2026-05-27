@@ -1,0 +1,25 @@
+install.sh
+  s_ea26885bbef96b::t_2d442cb8dfb974 1-208
+Makefile
+  s_ea26885bbef96b::t_2a9246822f2f74 1-57
+README.md
+  s_ea26885bbef96b::t_2903170aa1c264 1-2,5-15,19,29,32-34,36-37,39-40,42,44-48,50-51,53-71,79,82-83,85-86,89,96,100,103-107,114,120-161,164-168,170-171
+.gitignore
+  s_ea26885bbef96b::t_e9934591c709ac 9-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "1f3a41b01308b6a117e61448ba60bcfdef43c297",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
