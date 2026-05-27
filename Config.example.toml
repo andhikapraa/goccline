@@ -1,0 +1,26 @@
+# goccline example config — drop this at ~/.claude/goccline/Config.toml or
+# wherever $GOCCLINE_CONFIG points.
+#
+# This format mirrors the bash claude-code-statusline so you can migrate
+# directly. Unknown keys are tolerated.
+
+[theme]
+name = "catppuccin"
+
+[features]
+show_commits = true
+show_version = true
+show_submodules = true
+
+[display]
+lines = 2
+
+[display.line1]
+components = ["repo_info", "session_info"]
+separator = " │ "
+show_when_empty = true
+
+[display.line2]
+components = ["model_info", "session_mode", "version_info", "time_display"]
+separator = " │ "
+show_when_empty = true

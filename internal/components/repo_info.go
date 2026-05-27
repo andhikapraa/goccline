@@ -4,14 +4,16 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/andhikapraa/goccline/internal/git"
 )
 
 func init() {
 	Register("repo_info", renderRepoInfo)
 }
 
-// renderRepoInfo prints the working directory, shortened with ~ for $HOME.
-// Git branch follows in a future iteration; this is the minimal v0.1.
+// renderRepoInfo prints the working directory (~-shortened) and, if the
+// directory is a git repo, the current branch.
 func renderRepoInfo(ctx *Context) string {
 	cwd := ctx.Input.CWD
 	if cwd == "" {
@@ -23,5 +25,13 @@ func renderRepoInfo(ctx *Context) string {
 	if home, err := os.UserHomeDir(); err == nil && strings.HasPrefix(cwd, home) {
 		cwd = "~" + strings.TrimPrefix(cwd, home)
 	}
-	return filepath.Clean(cwd)
+	dir := filepath.Clean(cwd)
+
+	if branch := git.Branch(ctx.Input.CWD); branch != "" {
+		dir += " ⎇ " + branch
+		if git.HasWorktree(ctx.Input.CWD) {
+			dir += " [WT]"
+		}
+	}
+	return dir
 }
