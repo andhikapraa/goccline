@@ -1,0 +1,50 @@
+internal/components/version_display.go
+  s_ea26885bbef96b::t_262a9f828918b1 13-14,19-20,22,24
+internal/components/time_display.go
+  s_ea26885bbef96b::t_1194bb28395093 9-11
+internal/components/session_info.go
+  s_ea26885bbef96b::t_faa73127553438 54
+  s_ea26885bbef96b::t_b6bcd95a6a2442 35-36
+internal/components/hijri_calendar.go
+  s_ea26885bbef96b::t_bc8bee0c03ac47 41-42
+  s_ea26885bbef96b::t_a05bb3ad73479a 22,24-25,29
+internal/components/model_info.go
+  s_ea26885bbef96b::t_e8472e803e98d5 20,22,27,30,33,36
+internal/theme/theme.go
+  s_ea26885bbef96b::t_66cabc12b7721c 1-229
+internal/render/render.go
+  s_ea26885bbef96b::t_5f30653464e5cd 11,17-22
+internal/components/session_mode.go
+  s_ea26885bbef96b::t_6209cdda57824d 15-16
+internal/components/wellness.go
+  s_ea26885bbef96b::t_01d1e8bb29efa8 32,34,37,39
+internal/components/prayer.go
+  s_ea26885bbef96b::t_b22e4880debd04 66,71,74,76
+internal/components/repo_info.go
+  s_ea26885bbef96b::t_c62f32473c81c3 29-30,33,35
+internal/components/cost.go
+  s_ea26885bbef96b::t_ad180b52bf1d5f 28-29
+  s_ea26885bbef96b::t_4da1cc0b6e79d9 104-105
+  s_ea26885bbef96b::t_47723cb2de1e0b 44-45
+  s_ea26885bbef96b::t_1bb389ace7055b 60-61
+  s_ea26885bbef96b::t_17179f0264f3c2 76-77
+  s_ea26885bbef96b::t_2b31ac1a2ff17f 99
+internal/components/component.go
+  s_ea26885bbef96b::t_42a42013d28a89 11,20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "2e4a21a9e7416b2af5d40c069d3d1326a383f797",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
