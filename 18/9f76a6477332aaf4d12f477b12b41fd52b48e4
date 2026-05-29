@@ -1,0 +1,21 @@
+internal/cost/file_cache.go
+  s_ea26885bbef96b::t_1a81f6409a6af5 1-109
+internal/cost/parser.go
+  s_ea26885bbef96b::t_ca2bf6a26f9508 141
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "189f76a6477332aaf4d12f477b12b41fd52b48e4",
+  "prompts": {},
+  "sessions": {
+    "s_ea26885bbef96b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35a0566-30c6-4063-a14d-dbbd70b6f5b0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Muhammad Andhika Prasetya <andhikapraa@gmail.com>"
+    }
+  }
+}
