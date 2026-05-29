@@ -138,7 +138,7 @@ func parseParallel(files []string) []Entry {
 		go func() {
 			defer wg.Done()
 			for path := range ch {
-				results <- parseFile(path)
+				results <- parseFileCached(path)
 			}
 		}()
 	}
